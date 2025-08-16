@@ -1,0 +1,24 @@
+server:
+  port: 0 # Tells Spring to use any random available port
+
+spring:
+  application:
+    name: USER-SERVICE # The name it will use to register with Eureka
+  datasource:
+    url: jdbc:mysql://localhost:3306/paypal_users # Connects to the DB you just created
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update # Automatically creates/updates tables based on your code
+    show-sql: true # Shows the SQL queries in the console, great for debugging
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # The address of our Eureka server

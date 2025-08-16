@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # Apply to all paths
+            allowedOrigins: "http://localhost:3000" # The address of your Next.js app
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders: "*"
+      routes:
+        # Route for the User Service (now handles both /users and /requests)
+        - id: user-service-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**, /api/requests/**
+
+        # Route for the Wallet Service
+        - id: wallet-service-route
+          uri: lb://WALLET-SERVICE
+          predicates:
+            - Path=/api/wallets/**
+
+        # Route for the Transaction Service
+        - id: transaction-service-route
+          uri: lb://TRANSACTION-SERVICE
+          predicates:
+            - Path=/api/transactions/**
+
+        # Route for the Notification Service
+        - id: notification-service-route
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/notifications/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

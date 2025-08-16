@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS notification (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT,
+  message VARCHAR(255),
+  timestamp TIMESTAMP,
+  read BOOLEAN
+);
