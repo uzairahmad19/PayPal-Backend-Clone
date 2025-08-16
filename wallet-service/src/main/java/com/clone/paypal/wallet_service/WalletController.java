@@ -57,6 +57,17 @@ public class WalletController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/credit")
+    public ResponseEntity<Void> credit(@RequestBody WalletTransactionRequest request) {
+        Wallet wallet = walletRepository.findByUserId(request.getUserId()).orElse(null);
+        if (wallet == null) {
+            return ResponseEntity.badRequest().build(); // Wallet not found
+        }
+        wallet.setBalance(wallet.getBalance().add(request.getAmount()));
+        walletRepository.save(wallet);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Void> addMoney(@RequestBody WalletTransactionRequest request) {
         Wallet wallet = walletRepository.findByUserId(request.getUserId()).orElse(null);
